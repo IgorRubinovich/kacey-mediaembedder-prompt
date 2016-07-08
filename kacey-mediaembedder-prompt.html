@@ -1,0 +1,121 @@
+<!--
+	media embedder.
+	adds <embedded-media></embedded-media> wrapper around the tag.
+
+	/* css from http://fettblog.eu/blog/2013/06/16/preserving-aspect-ratio-for-embedded-iframes/) */
+	.embed-aspect-ratio
+	{
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-bottom: 51%;
+	}
+
+	.embed-aspect-ratio iframe {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0; top: 0;
+	}
+
+-->
+
+<dom-module id="kacey-mediaembeder-prompt">
+    <style>
+        textarea {
+            width : 100%;
+            min-height: 100px;
+            margin-bottom : 20px;
+        }
+
+
+    </style>
+    <template>
+        <paper-dialog on-iron-overlay-opened="focusInput" id="dialog">
+            <h2>Paste your embed code below</h2>
+            <div>
+                <div class="layout vertical">
+                    <textarea id="embedCode" rows="7" cols="40" id="input"></textarea>
+                    <paper-checkbox checked="{{ noWrapper }}">no wrapper</paper-checkbox>
+                </div>
+            </div>
+            <div class="buttons">
+                <paper-button on-tap="cancel">Cancel</paper-button>
+                <paper-button on-tap="accept">OK</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script>
+    (function () {
+        Polymer({
+            is : 'kacey-mediaembeder-prompt',
+
+            properties : {
+                editor : { type : Object }
+            },
+
+            open : function() {
+                this.$.dialog.sizingTarget = this.$.input;
+                this.$.dialog.stopResizeNotificationsFor(this.$.dialog)
+
+                this.$.dialog.open();
+                Polymer.dom.flush();
+            },
+
+            focusInput : function()
+            {
+                this.$.embedCode.focus();
+            },
+
+            acceptOnEnter : function(e) {
+                if((e.which || e.keyCode) == 13)
+                    this.accept();
+            },
+
+            cancel : function(e) {
+                this.$.dialog.close();
+            },
+
+            accept : function() {
+                var value, d, w, h;
+
+                value = this.$.embedCode.value.trim();
+
+                if(!value)
+                    return this._promptCallback('');;
+
+                //this.async(function() {
+                //
+                //});
+
+                this.$.dialog.close();
+
+                if(this._promptCallback)
+                    this._promptCallback("<embedded-media>" + value + "</embedded-media>");
+
+                this.$.embedCode.value = '';
+
+                this._promptCallback = null;
+
+            },
+
+            prompt : function(callback) {
+                this._promptCallback = callback;
+                this.$.dialog.open();
+            },
+
+            behaviors: [
+                ir.SelectorBehavior
+            ],
+
+            properties : {
+                "wrapperClass" : {
+                    type : String,
+                    value : "embed-aspect-ratio"
+                }
+            }
+
+        });
+    })();
+</script>
