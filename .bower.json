@@ -1,0 +1,13 @@
+{
+  "name": "kacey-mediaembedder-prompt",
+  "homepage": "https://github.com/IgorRubinovich/kacey-mediaembedder-prompt",
+  "_release": "3f49aff759",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "3f49aff75978c160a19fc3345aea6e45566ecedf"
+  },
+  "_source": "git@github.com:IgorRubinovich/kacey-mediaembedder-prompt.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:IgorRubinovich/kacey-mediaembedder-prompt.git"
+}
